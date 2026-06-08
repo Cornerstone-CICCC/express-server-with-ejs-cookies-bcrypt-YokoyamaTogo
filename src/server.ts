@@ -1,12 +1,13 @@
 import express from "express";
 import * as path from "path";
+import bcrypt from "bcrypt";
 
 const app = express();
 const __dirname = path.dirname(new URL(import.meta.url).pathname);
 
 type User = {
   email: string;
-  password: string;
+  hashedPassword: string;
 };
 
 const users: User[] = [];
@@ -32,12 +33,13 @@ app.get("/login", (req: express.Request, res: express.Response) => {
   });
 });
 
-app.post("/login", (req: express.Request, res: express.Response) => {
-  const foundUser = users.find((user) => {
-    return user.email === req.body.email && user.password === req.body.password;
-  });
+app.post("/login", async (req: express.Request, res: express.Response) => {
+  const foundUser = users.find((user) => user.email === req.body.email);
 
-  if (foundUser) {
+  if (
+    foundUser &&
+    (await bcrypt.compare(req.body.password, foundUser.hashedPassword))
+  ) {
     res.redirect("/");
     return;
   }
@@ -52,10 +54,12 @@ app.get("/register", (req: express.Request, res: express.Response) => {
   });
 });
 
-app.post("/register", (req: express.Request, res: express.Response) => {
+app.post("/register", async (req: express.Request, res: express.Response) => {
+  const hashedPassword = await bcrypt.hash(req.body.password, 10);
+
   const newUser: User = {
     email: req.body.email,
-    password: req.body.password,
+    hashedPassword,
   };
 
   users.push(newUser);

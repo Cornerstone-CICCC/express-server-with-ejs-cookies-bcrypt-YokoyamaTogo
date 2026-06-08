@@ -22,10 +22,12 @@
   },
   "homepage": "https://github.com/Cornerstone-CICCC/express-server-with-ejs-cookies-bcrypt-YokoyamaTogo#readme",
   "dependencies": {
+    "bcrypt": "^6.0.0",
     "ejs": "^6.0.1",
     "express": "^5.2.1"
   },
   "devDependencies": {
+    "@types/bcrypt": "^6.0.0",
     "@types/express": "^5.0.6",
     "@types/node": "^25.9.2",
     "tsx": "^4.22.4",
