@@ -32,6 +32,19 @@ app.get("/login", (req: express.Request, res: express.Response) => {
   });
 });
 
+app.post("/login", (req: express.Request, res: express.Response) => {
+  const foundUser = users.find((user) => {
+    return user.email === req.body.email && user.password === req.body.password;
+  });
+
+  if (foundUser) {
+    res.redirect("/");
+    return;
+  }
+
+  res.redirect("/login");
+});
+
 // register page
 app.get("/register", (req: express.Request, res: express.Response) => {
   res.render("pages/register", {
