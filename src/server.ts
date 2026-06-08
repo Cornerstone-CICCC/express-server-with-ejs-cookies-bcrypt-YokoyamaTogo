@@ -24,4 +24,11 @@ app.get("/login", (req: express.Request, res: express.Response) => {
   });
 });
 
+// register page
+app.get("/register", (req: express.Request, res: express.Response) => {
+  res.render("pages/register", {
+    tabTitle: "REGISTER PAGE",
+  });
+});
+
 app.listen(3000, () => console.log("Server is listening on port 3000"));
